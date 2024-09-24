@@ -1,13 +1,13 @@
 /***********************************************************************
  * @Author          : Pietro Zuntini Bonfim
- * @Description     : Utility class to transform list of sobjects
+ * @Description     : Utility class to transform list of sObjects
  ************************************************************************/
 public with sharing class Collection {
     private List<SObject> items; // List of items in the collection
 
     /**
-     * @description Responsável por "coletar" os registros a serem tratados
-     * @author Pietro Zuntini Bonfim | 05-26-2021
+     * @description Responsible for "collecting" the records to be processed
+     * @author Pietro Zuntini Bonfim
      * @param items
      * @return Collection
      **/
@@ -17,8 +17,8 @@ public with sharing class Collection {
     }
 
     /**
-     * @description Filtra a coleção por campo igual a um determinado valor
-     * @author Pietro Zuntini Bonfim | 05-26-2021
+     * @description Filters the collection by field equal to a specific value
+     * @author Pietro Zuntini Bonfim
      * @param field
      * @param value
      * @return Collection
@@ -37,8 +37,8 @@ public with sharing class Collection {
     }
 
     /**
-     * @description Retorna a lista de valores de um determinado campo
-     * @author Pietro Zuntini Bonfim | 05-26-2021
+     * @description Returns the list of values from a specific field
+     * @author Pietro Zuntini Bonfim
      * @param fieldName
      * @return List<String>
      **/
@@ -53,8 +53,8 @@ public with sharing class Collection {
     }
 
     /**
-     * @description Retorna o primeiro item da coleção
-     * @author Pietro Zuntini Bonfim | 05-27-2021
+     * @description Returns the first item of the collection
+     * @author Pietro Zuntini Bonfim
      * @return Sobject
      **/
     public Sobject first() {
@@ -62,11 +62,27 @@ public with sharing class Collection {
     }
 
     /**
-     * @description Retorna a lista de items da coleção
-     * @author Pietro Zuntini Bonfim | 05-26-2021
+     * @description Returns the list of items in the collection
+     * @author Pietro Zuntini Bonfim
      * @return List<SObject>
      **/
     public List<SObject> all() {
         return this.items;
+    }
+
+    /**
+     * @description Creates a map from the specified field
+     * @author Pietro Zuntini Bonfim
+     * @param fieldApiName
+     * @return Map<String, SObject>
+     **/
+    public Map<String, SObject> mapByField(String fieldApiName, Type mapType) {
+        Map<String, SObject> objMap = (Map<String, SObject>) mapType.newInstance();
+
+        for (SObject obj : this.items) {
+            objMap.put((String) obj.get(fieldApiName), obj);
+        }
+
+        return objMap;
     }
 }

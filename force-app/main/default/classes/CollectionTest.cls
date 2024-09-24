@@ -1,6 +1,6 @@
 /***********************************************************************
  * @Author          : Pietro Zuntini Bonfim
- * @Description     : Classe de teste da classe Collection
+ * @Description     : Test class for the Collection class
  ************************************************************************/
 @isTest
 private class CollectionTest {
@@ -8,8 +8,8 @@ private class CollectionTest {
     private static final Integer NUM_EMPLOYEES = 20;
 
     /**
-     * @description Cria massa de teste
-     * @author Pietro Zuntini Bonfim | 05-28-2021
+     * @description Creates test data
+     * @author Pietro Zuntini Bonfim
      **/
     @TestSetup
     static void makeData() {
@@ -23,8 +23,8 @@ private class CollectionTest {
     }
 
     /**
-     * @description Testa funcionalidade de collect() e all()
-     * @author Pietro Zuntini Bonfim | 05-28-2021
+     * @description Tests collect() and all() functionality
+     * @author Pietro Zuntini Bonfim
      **/
     @IsTest
     static void test_collect_and_all() {
@@ -34,12 +34,12 @@ private class CollectionTest {
         accounts = new Collection().collect([SELECT Name FROM Account]).all();
         Test.stopTest();
 
-        System.assertEquals(NUM_ACCOUNTS, accounts.size(), 'Esperavam-se ' + NUM_ACCOUNTS + ' encontradas');
+        System.assertEquals(NUM_ACCOUNTS, accounts.size(), 'Expected ' + NUM_ACCOUNTS + ', found ' + accounts.size());
     }
 
     /**
-     * @description Testa funcionalidade de whereField()
-     * @author Pietro Zuntini Bonfim | 05-28-2021
+     * @description Tests whereField() functionality
+     * @author Pietro Zuntini Bonfim
      **/
     @IsTest
     static void test_whereField() {
@@ -52,12 +52,12 @@ private class CollectionTest {
             .all();
         Test.stopTest();
 
-        System.assertEquals(NUM_ACCOUNTS, accounts.size(), 'Esperavam-se ' + NUM_ACCOUNTS + ' encontradas');
+        System.assertEquals(NUM_ACCOUNTS, accounts.size(), 'Expected ' + NUM_ACCOUNTS + ', found ' + accounts.size());
     }
 
     /**
-     * @description Testa funcionalidade de pluckString()
-     * @author Pietro Zuntini Bonfim | 05-28-2021
+     * @description Tests pluckString() functionality
+     * @author Pietro Zuntini Bonfim
      **/
     @IsTest
     static void test_pluckString() {
@@ -67,12 +67,12 @@ private class CollectionTest {
         accountNames = new Collection().collect([SELECT Name FROM Account]).pluckString('Name');
         Test.stopTest();
 
-        System.assertEquals(NUM_ACCOUNTS, accountNames.size(), 'Esperavam-se ' + NUM_ACCOUNTS + ' encontradas');
+        System.assertEquals(NUM_ACCOUNTS, accountNames.size(), 'Expected ' + NUM_ACCOUNTS + ', found ' + accountNames.size());
     }
 
     /**
-     * @description Testa funcionalidade de first()
-     * @author Pietro Zuntini Bonfim | 05-28-2021
+     * @description Tests first() functionality
+     * @author Pietro Zuntini Bonfim
      **/
     @IsTest
     static void test_first() {
@@ -82,6 +82,23 @@ private class CollectionTest {
         first = (Account) new Collection().collect([SELECT Name FROM Account]).first();
         Test.stopTest();
 
-        System.assertEquals('Test 1', first.Name, 'Esperava-se o nome da primeira conta "Test 1"');
+        System.assertEquals('Test 1', first.Name, 'Expected the first account name to be "Test 1"');
+    }
+
+    /**
+     * @description Tests mapByField() functionality
+     * @author Pietro Zuntini Bonfim
+     **/
+    @IsTest
+    static void test_mapByField() {
+        List<Account> accounts = [SELECT Name FROM Account];
+
+        Test.startTest();
+        Map<String, Account> mapAccounts = (Map<String, Account>) new Collection()
+            .collect(accounts)
+            .mapByField('Name', Map<String, Account>.class);
+        Test.stopTest();
+
+        System.assertEquals(NUM_ACCOUNTS, mapAccounts.size(), 'Expected ' + NUM_ACCOUNTS + ', found ' + mapAccounts.size());
     }
 }
